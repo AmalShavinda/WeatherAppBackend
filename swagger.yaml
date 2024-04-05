@@ -1,0 +1,82 @@
+swagger: "2.0"
+info:
+  description: "API for act as IOT weather station"
+  version: "1.0.0"
+  title: "IoT weather station"
+host: "localhost:5000"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /weather/{district}:
+    get:
+      summary: "Get latest weather data for a district"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "district"
+        in: "path"
+        description: "get weather data by district name"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Weather data successfully received"
+          schema:
+            $ref: '#/definitions/WeatherData'
+        404:
+          description: "District not found"
+  /weather:
+    get:
+      summary: "Get all available weather data"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Get all the weather data available"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/WeatherData'
+    post:
+      summary: "Post new weather data for a distric"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Adding weather data for a district"
+        required: true
+        schema:
+          $ref: '#/definitions/WeatherData'
+      responses:
+        200:
+          description: "Weather data created successfully"
+definitions:
+  WeatherData:
+    type: "object"
+    required:
+    - "district"
+    - "latitude"
+    - "longitude"
+    properties:
+      district:
+        type: "string"
+        description: "The name of the district"
+      temperature:
+        type: "string"
+        description: "Current temperature"
+      humidity:
+        type: "string"
+        description: "Current humidity percentage"
+      airPressure:
+        type: "string"
+        description: "Current air pressure"
+      latitude:
+        type: "number"
+        format: "double"
+        description: "Latitude of the weather station"
+      longitude:
+        type: "number"
+        format: "double"
+        description: "Longitude of the weather station"
